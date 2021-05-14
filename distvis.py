@@ -11,8 +11,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import scipy as sp
 import scipy.stats
+import networkx as nx
 
 from collections import defaultdict, Counter
+
 
 plt.style.use('dark_background')
 DISTRIBUTIONS = ['norm', 'gamma', 'beta', 'cauchy', 'expon', 'halfnorm', 
@@ -36,21 +38,20 @@ def sample(sender, data):
     node_parent = {n2: n1 for n1, n2 in links}
     print(links)
 
-    # Count the number of connections to each distribution. 
-    node_counts = defaultdict(int)
-    for n1, n2 in links:
-        node_counts[n2.split('_')[0]] += 1
-        node_counts[n1.split('_')[0]] # Make sure it exist
-    # Make sure disconnected nodes are also sampled
+    # Construct DAG
+    g = nx.DiGraph()
     for d in dists:
-        node_counts[d]
-    node_counter = Counter(node_counts)
-    print(node_counter)
+        g.add_node(d)
+    for link in links:
+        n1, n2 = [x.split('_')[0] for x in link]
+        # g.add_node(n1)
+        # g.add_node(n2)
+        g.add_edge(n1, n2)
 
     # Iterate distributions from least to most number of incoming
     # connections. This take care of sample dependencies.
     node_samples = {}
-    for node, count in node_counter.most_common()[::-1]:
+    for node in nx.topological_sort(g):
         dist_name, params = dists[node]
         for param in params:
             parent_node = node_parent.get(f'{node}_{param}')
