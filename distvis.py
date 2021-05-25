@@ -44,8 +44,6 @@ def sample(sender, data):
         g.add_node(d)
     for link in links:
         n1, n2 = [x.split('_')[0] for x in link]
-        # g.add_node(n1)
-        # g.add_node(n2)
         g.add_edge(n1, n2)
 
     # Iterate distributions from least to most number of incoming
