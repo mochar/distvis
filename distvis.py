@@ -19,7 +19,7 @@ from collections import defaultdict, Counter
 plt.style.use('dark_background')
 DISTRIBUTIONS = ['norm', 'gamma', 'beta', 'cauchy', 'expon', 'halfnorm', 
     'halfcauchy', 'invgamma', 'laplace', 'lognorm', 'skewnorm', 't',
-    'uniform', 'truncnorm', 'vonmises']
+    'uniform', 'truncnorm', 'vonmises', 'wald', 'gumbel_r']
 PARAM_DEFAULTS = {'loc': 0, 'scale': 1}
 
 
